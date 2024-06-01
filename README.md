@@ -106,7 +106,7 @@ Serão usadas as bibliotecas abaixo. As duas primeiras bibliotecas estão pré-i
 
 É necessário instalar as outras duas bibliotecas. Podemos instalá-las a partir do próprio gerenciador de bibliotecas do Arduino. Vá para o "Library Manager", digite o nome da biblioteca que deseja instalar, no caso “PubSubClient” e instale-a. Repita o mesmo processo para “NTPClient”.
 
-# Credenciais para conexão com a nuvem do Ubidots
+# Credenciais para conexão com MQTT Broker e nuvem do Ubidots
 
 Primeiro copie o código contido no "source-code" desse repositório para o Arduino IDE.
 Depois modifique os seguintes campos do código para configurar a sua conexão com a nuvem Ubidots.
