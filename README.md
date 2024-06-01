@@ -1,33 +1,150 @@
 # ECG-com-ESP32-na-plataforma-Ubidots
 
+
+# Introdução
+
+Este projeto visa a criação de um dispositivo de leitura cardiáca através da utilização de um módulo ESP32-WROOM-32 para fazer interface com o Sensor de ECG AD8232, e então gerar um sinal de ECG conectando os eletrodos do sensor ao peito. Usando a plataforma Ubidots como MQTT Broker para enviar os arquivos para a nuvem do próprio Ubidots que ira então criar um gráfico com os dados.
+
+
 # Materiais necessários:
 
 - Módulo ESP32.
   
 O Microcontrolador ESP32-WROOM-32 é um módulo MCU Wi-Fi + BT + BLE poderoso e genérico que atende a uma ampla variedade de aplicações, desde redes de sensores de baixa potência até as tarefas mais exigentes, como codificação por voz, streaming de música e decodificação de MP3.  
-No centro deste módulo está o chip ESP32-D0WDQ6. O chip incorporado foi projetado para ser escalonável e adaptável. Existem dois núcleos de CPU que podem ser controlados individualmente e a frequência de clock é ajustável de 80 MHz a 240 MHz. O usuário também pode desligar a CPU e usar o coprocessador de baixo consumo de energia para monitorar constantemente os periféricos em busca de alterações ou ultrapassagens de limites. ESP32 integra um rico conjunto de periféricos, que vão desde sensores de toque capacitivos, sensores Hall, interface de cartão SD, Ethernet, SPI de alta velocidade, UART, I2S e I2C. 
-A integração de Bluetooth, Bluetooth LE e Wi-Fi garante que uma ampla gama de aplicações possa ser direcionada: o uso de Wi-Fi permite um grande alcance físico e conexão direta à Internet através de um roteador Wi-Fi, enquanto o uso do Bluetooth permite que o usuário se conecte ao telefone ou transmita sinais de baixa energia para sua detecção. A corrente de suspensão do chip é inferior a 5 µA, tornando-o adequado para aplicações eletrônicas alimentadas por bateria e vestíveis. ESP32 suporta uma taxa de dados de até 150 Mbps e potência de saída de 20,5 dBm na antena para garantir o mais amplo alcance físico. Como tal, o chip oferece especificações para um melhor desempenho para integração eletrônica, alcance, consumo de energia e conectividade. 
-
-
 
 - Kit Sensor AD8232 + Eletrodos + Conectores para Eletrodos. 
 
-Este sensor é uma placa com bom custo-benefício usada para medir a atividade elétrica do coração. Esta atividade elétrica pode ser mapeada como um ECG, ou eletrocardiograma, e emitida como uma leitura analógica. Os ECGs podem ser extremamente barulhentos, o monitor de frequência cardíaca de derivação única AD8232 atua como um amplificador operacional para ajudar a obter facilmente um sinal claro dos intervalos PR e QT.  
-O AD8232 é um bloco de condicionamento de sinal integrado para ECG e outras aplicações de medição de biopotencial. Ele foi projetado para extrair, amplificar e filtrar pequenos sinais biopotenciais na presença de condições ruidosas, como aquelas criadas por movimento ou colocação remota de eletrodos.  
-O módulo AD8232 separa nove conexões do IC nas quais você pode soldar pinos, fios ou outros conectores. SDN, LO+, LO-, OUTPUT, 3.3V, GND fornecem pinos essenciais para operar este monitor com um Arduino ou outra placa de desenvolvimento. Também são fornecidos nesta placa os pinos RA (braço direito), LA (braço esquerdo) e RL (perna direita) para conectar e usar seus próprios sensores personalizados. Além disso, há uma luz indicadora LED que pulsa ao ritmo de um batimento cardíaco. 
-
-
+Este sensor é uma placa com bom custo-benefício usada para medir a atividade elétrica do coração.
+O módulo AD8232 contem nove conexões. SDN, LO+, LO-, OUTPUT, 3.3V, GND fornecem pinos essenciais para operar este monitor com um Arduino ou outra placa de desenvolvimento. Também são fornecidos nesta placa os pinos RA (braço direito), LA (braço esquerdo) e RL (perna direita) para conectar e usar seus próprios sensores personalizados. Além disso, há uma luz indicadora LED que pulsa ao ritmo de um batimento cardíaco. 
 
 - Protoboard. 
  
 Protoboard (ou Breadboard), também conhecida como matriz de contatos ou placa de prototipagem, é uma placa que possui furos e conexões internas para montagem de circuitos, utilizada para testes com componentes eletrônicos. Sua maior vantagem de uso é que ele dispensa a necessidade de solda para conectar tais circuitos, com placas variando entre 830 a 6000 furos. 
-Na superfície de uma protoboard há uma base de plástico em que existem centenas de orifícios onde são encaixados os componentes. Em sua parte inferior, são instalados contatos metálicos que interligam eletricamente os componentes inseridos na placa. Geralmente suportam correntes entre 1 A e 3 A. Os contatos metálicos estão em diferentes sentidos na matriz. A placa possui a matriz principal em seu meio e duas linhas superiores e duas inferiores em cada matriz (alguns possuem apenas uma linha). Nestes últimos, os contatos estão na horizontal, enquanto na matriz principal eles estão na vertical. Em outras palavras, as linhas isoladas se conectam com os furos de baixo e as linhas agrupadas se conectam com os furos do lado. 
-A protoboard é uma ferramenta muito útil para os profissionais da área de utilização porque possibilita conectar diversos componentes, como capacitores, resistores, circuitos integrados, diodos, transistores, entre outros, permitindo uma precisão maior na montagem de circuitos. 
-
-
 
 - Jumper. 
 
 Os fios jumper são fios que possuem pinos conectores em cada extremidade, permitindo que sejam usados para conectar dois pontos entre si sem soldar. Os fios jumper são normalmente usados com placas de ensaio (Protoboards) e outras ferramentas de prototipagem para facilitar a alteração de um circuito conforme necessário. 
-Embora os fios jumper venham em uma variedade de cores, as suas cores na verdade não significam nada. Isso quer dizer que um fio jumper vermelho é tecnicamente igual a um preto. Mas as cores são utilizadas a seu favor para diferenciar tipos de conexões, como terra ou energia. 
-Os fios jumper normalmente vêm em três versões: macho x macho, macho x fêmea e fêmea x fêmea. A diferença entre cada um está no ponto final do fio. As extremidades macho têm um pino saliente e podem ser conectadas a outros objetos, como as placas de ensaio, enquanto as extremidades fêmeas não têm e são usadas para serem conectadas por outros conectores. Os jumpers macho-macho são os mais comuns e os que você provavelmente encontrara com mais frequência. Ao conectar duas portas em uma placa de ensaio, você precisará de um fio macho para macho.
+
+
+# Configuração do dispositivo
+
+- Para fazer a conexão do sensor de ECG AD8232 com o módulo ESP32, primeiro encaixe ambos nas protoboards e conecte com os jumpers o pino de 3.3V do AD8232 ao do ESP32, conecte o GND ao GND. O pino de OUTPUT do AD8232 é conectado ao pino VP do ESP32. Os pinos LO+ e L0- do AD8232 são conectados a D2 e D3 do ESP32.
+
+# Configurando o Ubidots
+
+O Ubidots funciona como o MQTT Broker, e oferece uma plataforma para desenvolvedores que lhes permite capturar facilmente dados de sensores e transformá-los em informações úteis.
+
+- Passo 1: Criando uma conta Ubidots 
+
+Acesse https://www.ubidots.com e crie uma conta clicando em “Sign Up”. 
+
+- Passo 2: Criando Dispositivo e Adicionando Variáveis 
+
+Vá para “My Account”, clique em “Devices”, crie um Device, selecione o “Blank Device”, digite o nome que quiser e clique em “Next” para criar o dispositivo. 
+
+Clique no dispositivo recém-criado. Clique no sinal de “+” e escolha a opção “Raw variable”. Agora renomeie esta variável com algum nome. 
+
+- Passo 3: Criando o Dashboard e Adicionando Widget 
+
+Para criar um Dashboard, vá em “Data > Dashboards”. Clique no ícone “Add new Dashboard”, digite um nome e mantenha todos os outros campos nas configurações padrão e então crie-o clicando em “Save”.
+
+Clique na opção “Add new Widget”, você será apresentado a várias opções de visualização de dados, escolha uma delas, para este projeto é a melhor escolha é o “Line Chart” para traçar o gráfico usando os dados carregados através do módulo ESP32. 
+
+Depois, será solicitado que adicione uma variável, selecione o Device criado anteriormente e selecione a variável que foi criada em seguida. 
+
+Clique em "Appearance" e de um nome para o Dashboard, mantenha o restante das opções no padrão, depois confirme. 
+
+Como o dispositivo não se comunicou com Ubidots, ele mostrará que nenhum dado foi encontrado. Assim que o dispositivo começar a enviar dados, ele poderão ser vizualizados no Dashboard.
+
+
+# Instalando a extensão para ESP32 e bibliotecas necessárias
+
+É necessário que se faça o download e instale o software mais recente do Arduino IDE, pois é ele que usaremos para a programação. O software pode ser encontrado em https://www.arduino.cc/en/software. 
+Após a intalação, abra o programa.
+
+
+- Instalando o complemento ESP32 no Arduino IDE: 
+
+- Passo 1: 
+
+No seu Arduino IDE, vá em File> Preferences. 
+
+- Passo 2: 
+
+Digite no campo “Additional Board Manager URLs” os seguintes endereços e cofirme:
+
+https://dl.espressif.com/dl/package_esp32_index.json, 
+http://dan.drown.org/stm32duino/package_STM32duino_index.json, 
+http://arduino.esp8266.com/stable/package_esp8266com_index.json. 
+
+- Passo 3: 
+
+Certifique-se das configurações de “Network”. Se o seu computador estiver conectado a um ponto de acesso de telefone celular ou roteador Wi-Fi sem proxy, você poderá selecionar as configurações de “No Proxy” ou “Auto-detect proxy settings”. 
+Da mesma forma, se você estiver usando uma conexão de Internet com um proxy, selecione “Manual Proxy Configuration” e forneça os detalhes do proxy.  
+Em seguida, clique no botão “OK”.
+
+- Passo 4: 
+
+Abra o Boards Manager. Vá em Tools> Board> Boards Manager… 
+Procure por “ESP32” e instale a extensão “ESP32 by Espressif Systems”. 
+A extensão para ESP32 será instalado após alguns segundos. Após uma instalação bem-sucedida, você pode fechar esta janela.
+
+
+- Instalando bibliotecas necessárias: 
+
+Serão usadas as bibliotecas abaixo. As duas primeiras bibliotecas estão pré-instaladas no Arduino IDE. 
+
+#include <WiFi.h> 
+#include <WiFiUdp.h> 
+#include <PubSubClient.h> 
+#include <NTPClient.h> 
+
+É necessário instalar as outras duas bibliotecas. Podemos instalá-las a partir do próprio gerenciador de bibliotecas do Arduino. Vá para o "Library Manager", digite o nome da biblioteca que deseja instalar, no caso “PubSubClient” e instale-a. Repita o mesmo processo para “NTPClient”.
+
+# Credenciais para conexão com a nuvem do Ubidots
+
+Primeiro copie o código contido no "source-code" desse repositório para o Arduino IDE.
+Depois modifique os seguintes campos do código para configurar a sua conexão com a nuvem Ubidots.
+
+- Credenciais Wi-Fi
+
+Fornecer SSID do seu Wi-Fi e senha para conexão com a Internet. 
+
+#define WIFISSID "xxxxxxxxxxxxxxxxx" // Preencha com o SSID do seu Wi-Fi
+#define PASSWORD "xxxxxxxxxx" // Preencha com a senha do seu Wi-Fi
+
+
+- Credenciais Ubidots/ Protocolo MQTT 
+
+Fornecer o token criado pleo Ubidots, podemos obtê-lo no próprio site Ubidots.  
+
+Esse token é que faz a conexão com o Ubidots MQTT Broker, que autoriza o dispositivo a interagir com API do Ubidots. 
+
+Em “My Account”, vá até a opção “API Credentials” e copie o que consta em “Default Token”. 
+
+Insira um nome de cliente MQTT. Pode ser qualquer sequência alfanumérica. 
+
+Em seguida, insira o nome da variável (Variable) e o nome do dispositivo(Device), que foi criado anteriormente no Ubidots. 
+
+#define TOKEN "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" // Preencha com a "Default Token" fornecida pelo Ubidots
+#define MQTT_CLIENT_NAME "xxxxxxxxxxxxx" // Preencha com qualquer sequencia alfanumérica
+#define VARIABLE_LABEL "xxxxxxxxxx" // Preencha com o nome da "Variable" criada no Ubidots 
+#define DEVICE_LABEL "xxxxxxxxxxxxxx" // Preencha com o nome do "Device" criado no Ubidots
+
+
+# Upload 
+
+Conecte o dispositivo através do módulo ESP32 ao laptop/computador e coloque os eletrodos no corpo da pessoa a ser examinada, lembrando de pedir para que ela não se mova durante todo o processo. É recomendado que o exame seja feito com a pessoa deitada.
+
+Verifique na aba "Tools" do Arduino IDE se a configuração consta como “Board: ESP32 Dev Module, e depois selecione o “Port” correto de onde foi conectado o dispositivo. 
+
+Em seguida, clique em “Upload” e segure o botão "boot" do módulo ESP32 até a conexão ser estabelecida. 
+
+
+# Output 
+
+Após o upload bem-sucedido, abra o Serial Monitor, nele podera ver o ESP32 conectado com sucesso ao Wi-Fi programado e alocado com endereço IP. Depois é iniciada a conexão MQTT com a nuvem Ubidots e conectada a ela.  
+
+Em seguida, é iniciado o envio de dados de ECG junto com um “Timestamp”. Cada pacote de dados contém o nome da variável e 4 pontos de dados com o “Timestamp” de data/hora exato. 
+
+Vá para o site Ubidots e recarregue a página com o Dashboard. Você pode ver o eletrocardiograma sendo traçado ao vivo no painel do Ubidots.  
