@@ -94,6 +94,7 @@ A extensão para ESP32 será instalado após alguns segundos. Após uma instala�
 
 Serão usadas as bibliotecas abaixo. As duas primeiras bibliotecas estão pré-instaladas no Arduino IDE. 
 
+
 #include <WiFi.h>
 
 #include <WiFiUdp.h>
@@ -101,6 +102,7 @@ Serão usadas as bibliotecas abaixo. As duas primeiras bibliotecas estão pré-i
 #include <PubSubClient.h>
 
 #include <NTPClient.h> 
+
 
 É necessário instalar as outras duas bibliotecas. Podemos instalá-las a partir do próprio gerenciador de bibliotecas do Arduino. Vá para o "Library Manager", digite o nome da biblioteca que deseja instalar, no caso “PubSubClient” e instale-a. Repita o mesmo processo para “NTPClient”.
 
@@ -113,9 +115,11 @@ Depois modifique os seguintes campos do código para configurar a sua conexão c
 
 Fornecer SSID do seu Wi-Fi e senha para conexão com a Internet. 
 
+
 #define WIFISSID "xxxxxxxxxxxxxxxxx" // Preencha com o SSID do seu Wi-Fi
 
 #define PASSWORD "xxxxxxxxxx" // Preencha com a senha do seu Wi-Fi
+
 
 
 - Credenciais Ubidots/ Protocolo MQTT 
@@ -130,6 +134,7 @@ Insira um nome de cliente MQTT. Pode ser qualquer sequência alfanumérica.
 
 Em seguida, insira o nome da variável (Variable) e o nome do dispositivo(Device), que foi criado anteriormente no Ubidots. 
 
+
 #define TOKEN "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" // Preencha com a "Default Token" fornecida pelo Ubidots
 
 #define MQTT_CLIENT_NAME "xxxxxxxxxxxxx" // Preencha com qualquer sequencia alfanumérica
@@ -137,6 +142,7 @@ Em seguida, insira o nome da variável (Variable) e o nome do dispositivo(Device
 #define VARIABLE_LABEL "xxxxxxxxxx" // Preencha com o nome da "Variable" criada no Ubidots 
 
 #define DEVICE_LABEL "xxxxxxxxxxxxxx" // Preencha com o nome do "Device" criado no Ubidots
+
 
 
 # Upload 
