@@ -1,4 +1,4 @@
-# ECG-com-ESP32-na-plataforma-Ubidots
+# Sistema de monitoramento cardíaco e ECG com ESP32 na plataforma Ubidots
 
 
 # Introdução
